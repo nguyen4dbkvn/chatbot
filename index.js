@@ -61,7 +61,7 @@ app.get('/webhook', (req, res) => {
 
 
 function sendReplyMessage(senderId, recipientId, receivedMsg) {
-	reques({
+	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {
 			access_token: VERIFY_TOKEN,
