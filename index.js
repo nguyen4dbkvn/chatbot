@@ -5,7 +5,9 @@ const
    bodyParser = require('body-parser'),
    app = express().use(bodyParser.json());
 
-app.listen(4000, () => console.log('webhook is listening.'));
+   
+console.log("port: ", process.env.PORT);
+app.listen(process.env.PORT || 4000, () => console.log('webhook is listening.'));
 
 app.get('/', (req, res) => {
 	res.status(200).send('Geted!');
