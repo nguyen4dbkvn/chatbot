@@ -23,12 +23,14 @@ app.post('/webhook', (req, res) => {
 			 let senderId = webhookEvent.sender.id;
 			 let recipientId = webhookEvent.recipient.id;
 			 let timestamp = webhookEvent.timestamp;
-			 let msgText = webhookEvent.message.text;
-			 console.log("senderId: ", senderId);
-			 console.log("recipientId: ", recipientId);
-			 console.log("timestamp: ", timestamp);
-			 console.log("msgText: ", msgText);
-			 sendReplyMessage(recipientId, senderId, msgText);
+			 console.log('\n---------------------');
+			 console.log(webhookEvent);
+			 if (webhookEvent.message) {
+				 let msgText = webhookEvent.message.text;
+				 console.log("msgText: ", msgText);
+				sendReplyMessage(recipientId, senderId, msgText);
+			 }
+			 console.log('---------------------\n');
 		 });
 		 
       });
