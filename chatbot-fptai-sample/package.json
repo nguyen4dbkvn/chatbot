@@ -4,7 +4,9 @@
   "description": "sample to dev chatbot with FB Messager & FPT.AI",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"web": "node index.js",
+	"start": "node index.js"
   },
   "keywords": [
     "fb-messager",
