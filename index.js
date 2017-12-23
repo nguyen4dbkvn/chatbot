@@ -70,7 +70,7 @@ function sendReplyMessage(senderId, recipientId, receivedMsg) {
 		json: {
 			sender: {
 				id: senderId
-			}
+			},
 			recipient: {
 				id: recipientId
 			},
