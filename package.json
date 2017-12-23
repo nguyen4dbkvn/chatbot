@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"web": "node index.js",
-	"start": "node index.js"
+	"build": "npm install",
+    "web": "node index.js",
+    "start": "node index.js"
   },
   "keywords": [
     "fb-messager",
