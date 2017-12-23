@@ -1,5 +1,5 @@
 
-Copyright (c) 2017, NBNguyen <nbnguyen@unisrv.jp>
+Copyright (c) 2017, NBNguyen <nguyen4dbkvn@gmail.com>
 
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
