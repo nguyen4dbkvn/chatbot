@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 
 app.post('/webhook', (req, res) => {
    let body = req.body;
+   console.log("POST:", body);
 
    if (body.object === 'page') {
       body.entry.forEach(function (entry) {
@@ -32,6 +33,7 @@ app.post('/webhook', (req, res) => {
 app.get('/webhook', (req, res) => {
    let VERIFY_TOKEN = "EAAEOCh2yDjwBAKLdOw21Rf132ck5V7jsWLiTHxZBBj9u4b5aH8BTmHJdMXg2UW3VjkxiMJvovpWWwipMSDsVrgMn4o9Qe3hVKP8p2F1RjVxii1F2lgNOAAE6ZAQJo7QIZAIq2zZCUZA15qeouBIbRCths4HspgK3e35wrXh2lZBjMNDuIZAvyaU";
 
+   console.log("GET:", req.body);
    let mode = req.query['hub.mode'];
    let token = req.query['hub.verify_token'];
    let challenge = req.query['hub.challenge'];
