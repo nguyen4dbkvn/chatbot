@@ -34,6 +34,7 @@ app.post('/webhook', (req, res) => {
             entry.changes.forEach(function (changes) {
                // if (changes.field === 'feed' && changes.value.item)
                console.log(changes);
+               sendCommentReply(changes.from, changes.comment_id, changes.message);
             });
          }
 
@@ -83,7 +84,7 @@ app.get('/webhook', (req, res) => {
 
 function sendReplyMessage(senderId, recipientId, receivedMsg) {
 	request({
-		url: 'https://graph.facebook.com/v2.6/me/messages',
+		url: 'https://graph.facebook.com/v2.12/me/messages',
 		qs: {
 			access_token: VERIFY_TOKEN,
 		},
@@ -100,4 +101,23 @@ function sendReplyMessage(senderId, recipientId, receivedMsg) {
 			}
 		}
 	});
+}
+
+function sendCommentReply(from, commentId, message) {
+   request({
+      uri: 'https://graph.facebook.com/v2.12/' + commentId + '/private_replies',
+      qs: {
+         access_token: VERIFY_TOKEN
+      },
+      method: 'POST',
+      json: {
+         sender: {
+            id: from.id
+         },
+         recipient: {
+            id: from.id
+         },
+         message: 'Hello' + from.name + '! Wellcome my page.'
+      }
+   })
 }
