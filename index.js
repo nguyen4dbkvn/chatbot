@@ -105,18 +105,18 @@ function sendReplyMessage(senderId, recipientId, receivedMsg) {
 
 function sendCommentReply(from, commentId, message) {
    request({
-      url: 'https://graph.facebook.com/v2.12/' + commentId + '/private_replies',
+      uri: 'https://graph.facebook.com/v2.12/' + commentId + '/private_replies',
       qs: {
          access_token: VERIFY_TOKEN
       },
       method: 'POST',
       json: {
-         sender: {
-            id: from.id
-         },
-         recipient: {
-            id: from.id
-         },
+         // sender: {
+         //    id: from.id
+         // },
+         // recipient: {
+         //    id: from.id
+         // },
          message: 'Hello' + from.name + '! Wellcome my page.'
       }
    });
