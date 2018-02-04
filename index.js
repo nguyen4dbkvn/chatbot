@@ -37,7 +37,7 @@ app.post('/webhook', (req, res) => {
             });
          }
 
-         if (entry.hasOwnProperty('messaging') {
+         if (entry.hasOwnProperty('messaging')) {
             entry.messaging.forEach(function (webhookEvent) {
                let senderId = webhookEvent.sender.id;
                let recipientId = webhookEvent.recipient.id;
