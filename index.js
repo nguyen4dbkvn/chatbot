@@ -38,11 +38,14 @@ app.post('/webhook', (req, res) => {
                // if (changes.field === 'feed' && changes.value.item)
                console.log(changes);
 
+
                let value = changes.value;
 
-               sendCommentReply(value.from, value.comment_id, value.message);
-               sendPrivateReply(value.from, value.comment_id, value.message);
-               likeComment(value.comment_id);
+               if (value.from.name !== 'Đồng hồ abc') {
+                  sendCommentReply(value.from, value.comment_id, value.message);
+                  sendPrivateReply(value.from, value.comment_id, value.message);
+                  likeComment(value.comment_id);
+               }
             });
          }
 
