@@ -120,5 +120,11 @@ function sendCommentReply(from, commentId, message) {
          // },
          message: 'Hello' + from.name + '! Wellcome my page.'
       }
-   });
+   }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log(body);
+    } else {
+      console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+    }
+  });
 }
