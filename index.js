@@ -106,7 +106,7 @@ function sendReplyMessage(senderId, recipientId, receivedMsg) {
 
 function sendCommentReply(from, commentId, message) {
    request({
-      uri: 'https://graph.facebook.com/v2.12/' + commentId + '/private_replies',
+      uri: 'https://graph.facebook.com/v2.12/' + commentId + '/comments',
       qs: {
          access_token: VERIFY_TOKEN
       },
@@ -118,7 +118,7 @@ function sendCommentReply(from, commentId, message) {
          // recipient: {
          //    id: from.id
          // },
-         message: 'Hello' + from.name + '! Wellcome my page.'
+         message: 'Hello ' + from.name + '! Wellcome my page.'
       }
    }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
