@@ -10,6 +10,8 @@ const
 // let VERIFY_TOKEN = "EAAExEuqCQQYBAMCCfTGZCQ2MBYjjbTno3ZAOqDAP3EOVuLTsjayA1nDOPDZAdZAB6HZA48Yb3xUgCafeL8xO6ZA0HGjEkUJ1L2lSpKBw0GjhrZB1iuLDJgUjV0aPMlLkg4b2yunJCthyngbqnKrPsXV5miVdVrvMUmCGbII1FLsyu1DBSzdoycg"
 let VERIFY_TOKEN = "EAACEdEose0cBAKGjeWd4T9e43UMpBD8K5DdgwBesEMHKALFDuNaZAmYai50aA3XhoJALiY2uGFUJ7buAZBAE6soOIlhjiPPP1QUZAWMgVyZBGwBDEXOQZBNufeqBKCrt0n0q3wbQebuGbqOrEmWJVbPSX5a5LOvMkiqYmFGQZCZCHHdSH7XZCkUwQY5XZBRWKYUe51Ad05wiM0gZDZD"
 
+let products = [{"id": "0001", "price": "200$"}, {"id": "0002", "price": "350$"}];
+
 app.listen(process.env.PORT || 4000, () => console.log('webhook is listening.'));
 
 app.get('/', (req, res) => {
@@ -35,7 +37,12 @@ app.post('/webhook', (req, res) => {
             entry.changes.forEach(function (changes) {
                // if (changes.field === 'feed' && changes.value.item)
                console.log(changes);
-               sendCommentReply(changes.value.from, changes.value.comment_id, changes.value.message);
+
+               let value = changes.value;
+
+               sendCommentReply(value.from, value.comment_id, value.message);
+               sendPrivateReply(value.from, value.comment_id, value.message);
+               likeComment(value.comment_id);
             });
          }
 
@@ -112,13 +119,7 @@ function sendCommentReply(from, commentId, message) {
       },
       method: 'POST',
       json: {
-         // sender: {
-         //    id: from.id
-         // },
-         // recipient: {
-         //    id: from.id
-         // },
-         message: 'Hello ' + from.name + '! Wellcome my page.'
+         message: 'Cảm ơn bạn đã quan tâm đến sản phẩm. Bạn kiểm tra inbox giúp mình nhé.'
       }
    }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -127,4 +128,39 @@ function sendCommentReply(from, commentId, message) {
       console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
     }
   });
+}
+
+function sendPrivateReply(from, commentId, message) {
+   request({
+      uri: 'https://graph.facebook.com/v2.12/' + commentId + '/private_replies',
+      qs: {
+         access_token: VERIFY_TOKEN
+      },
+      method: 'POST',
+      json: {
+         message: 'Cảm ơn bạn đã quan tâm đến sản phẩm có mã #' + products[0].id + '. Sản phẩm có giá ' + products[0].price
+      }
+   }, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+         console.log(body);
+      } else {
+         console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+      }
+   });
+}
+
+function likeComment(commentId) {
+   request({
+      uri: 'https://graph.facebook.com/v2.12/' + commentId + '/likes',
+      qs: {
+         access_token: VERIFY_TOKEN
+      },
+      method: 'POST'
+   }, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+         console.log(body);
+      } else {
+         console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+      }
+   });
 }
