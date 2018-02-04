@@ -4,7 +4,6 @@ const
    express = require('express'),
    request = require('request'),
    bodyParser = require('body-parser'),
-   fptAI = require('./fpt-ai'),
    app = express().use(bodyParser.json());
 
 let VERIFY_TOKEN = "EAAEOCh2yDjwBAKLdOw21Rf132ck5V7jsWLiTHxZBBj9u4b5aH8BTmHJdMXg2UW3VjkxiMJvovpWWwipMSDsVrgMn4o9Qe3hVKP8p2F1RjVxii1F2lgNOAAE6ZAQJo7QIZAIq2zZCUZA15qeouBIbRCths4HspgK3e35wrXh2lZBjMNDuIZAvyaU";
