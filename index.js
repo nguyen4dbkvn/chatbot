@@ -34,7 +34,7 @@ app.post('/webhook', (req, res) => {
             entry.changes.forEach(function (changes) {
                // if (changes.field === 'feed' && changes.value.item)
                console.log(changes);
-               sendCommentReply(changes.from, changes.comment_id, changes.message);
+               sendCommentReply(changes.value.from, changes.value.comment_id, changes.value.message);
             });
          }
 
