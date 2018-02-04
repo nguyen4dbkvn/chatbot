@@ -9,7 +9,7 @@ const
 // let VERIFY_TOKEN = "EAAEOCh2yDjwBAKLdOw21Rf132ck5V7jsWLiTHxZBBj9u4b5aH8BTmHJdMXg2UW3VjkxiMJvovpWWwipMSDsVrgMn4o9Qe3hVKP8p2F1RjVxii1F2lgNOAAE6ZAQJo7QIZAIq2zZCUZA15qeouBIbRCths4HspgK3e35wrXh2lZBjMNDuIZAvyaU";
 // let VERIFY_TOKEN = "EAAExEuqCQQYBAMCCfTGZCQ2MBYjjbTno3ZAOqDAP3EOVuLTsjayA1nDOPDZAdZAB6HZA48Yb3xUgCafeL8xO6ZA0HGjEkUJ1L2lSpKBw0GjhrZB1iuLDJgUjV0aPMlLkg4b2yunJCthyngbqnKrPsXV5miVdVrvMUmCGbII1FLsyu1DBSzdoycg"
 //let VERIFY_TOKEN = "EAACEdEose0cBAKGjeWd4T9e43UMpBD8K5DdgwBesEMHKALFDuNaZAmYai50aA3XhoJALiY2uGFUJ7buAZBAE6soOIlhjiPPP1QUZAWMgVyZBGwBDEXOQZBNufeqBKCrt0n0q3wbQebuGbqOrEmWJVbPSX5a5LOvMkiqYmFGQZCZCHHdSH7XZCkUwQY5XZBRWKYUe51Ad05wiM0gZDZD"
-let VERIFY_TOKEN = "335432290287878e7de1722f36e63a026fccdb09c0fdaee";
+let VERIFY_TOKEN = "335432290287878|g3wgooRtQfsD6A6x4W-GOOSCiU8";
 
 let products = [{"id": "0001", "price": "200$"}, {"id": "0002", "price": "350$"}];
 
@@ -113,6 +113,12 @@ function sendReplyMessage(senderId, recipientId, receivedMsg) {
 			}
 		}
 	});
+}
+
+function getAccessToken(callback) {
+   request({
+      uri: 'https://graph.facebook.com/oauth/access_token'
+   });
 }
 
 function sendCommentReply(from, commentId, message) {
