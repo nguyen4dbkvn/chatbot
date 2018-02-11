@@ -111,9 +111,11 @@ app.post('/authorize', (req, res) => {
       url: 'https://graph.facebook.com/me/accounts',
       qs: {
 			access_token: body.accessToken,
-         scope: 'manage_pages,publish_pages,read_page_mailboxes,pages_messaging,pages_messaging_subscriptions'
 		},
-      method: 'GET'
+      method: 'GET',
+      json: {
+         scope: ['manage_pages','publish_pages','read_page_mailboxes','pages_messaging','pages_messaging_subscriptions']
+      }
    }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
 
