@@ -4,6 +4,7 @@ const
    express = require('express'),
    request = require('request'),
    bodyParser = require('body-parser'),
+   path = require('path'),
    app = express().use(bodyParser.json());
 
 // let VERIFY_TOKEN = "EAAEOCh2yDjwBAKLdOw21Rf132ck5V7jsWLiTHxZBBj9u4b5aH8BTmHJdMXg2UW3VjkxiMJvovpWWwipMSDsVrgMn4o9Qe3hVKP8p2F1RjVxii1F2lgNOAAE6ZAQJo7QIZAIq2zZCUZA15qeouBIbRCths4HspgK3e35wrXh2lZBjMNDuIZAvyaU";
@@ -16,7 +17,7 @@ let products = [{"id": "0001", "price": "200$"}, {"id": "0002", "price": "350$"}
 app.listen(process.env.PORT || 4000, () => console.log('webhook is listening.'));
 
 app.get('/', (req, res) => {
-   var callback = function (err, res, body) {
+   /*var callback = function (err, res, body) {
       if (err) {
          console.error(err);
       }
@@ -26,7 +27,9 @@ app.get('/', (req, res) => {
    }
    var content = req.query['content'];
    fptAI.getDateTime(content, callback);
-   res.status(200).send('OK');
+   res.status(200).send('OK');*/
+
+   res.sendFile(path.join(__dirname + '/html/index.html'));
 });
 
 app.post('/webhook', (req, res) => {
