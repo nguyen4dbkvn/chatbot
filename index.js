@@ -7,12 +7,18 @@ const
    path = require('path'),
    app = express().use(bodyParser.json());
 
+   app.use(bodyParser.urlencoded({extended: false}));
+
 // let VERIFY_TOKEN = "EAAEOCh2yDjwBAKLdOw21Rf132ck5V7jsWLiTHxZBBj9u4b5aH8BTmHJdMXg2UW3VjkxiMJvovpWWwipMSDsVrgMn4o9Qe3hVKP8p2F1RjVxii1F2lgNOAAE6ZAQJo7QIZAIq2zZCUZA15qeouBIbRCths4HspgK3e35wrXh2lZBjMNDuIZAvyaU";
 // let VERIFY_TOKEN = "EAAExEuqCQQYBAMCCfTGZCQ2MBYjjbTno3ZAOqDAP3EOVuLTsjayA1nDOPDZAdZAB6HZA48Yb3xUgCafeL8xO6ZA0HGjEkUJ1L2lSpKBw0GjhrZB1iuLDJgUjV0aPMlLkg4b2yunJCthyngbqnKrPsXV5miVdVrvMUmCGbII1FLsyu1DBSzdoycg"
 //let VERIFY_TOKEN = "EAACEdEose0cBAKGjeWd4T9e43UMpBD8K5DdgwBesEMHKALFDuNaZAmYai50aA3XhoJALiY2uGFUJ7buAZBAE6soOIlhjiPPP1QUZAWMgVyZBGwBDEXOQZBNufeqBKCrt0n0q3wbQebuGbqOrEmWJVbPSX5a5LOvMkiqYmFGQZCZCHHdSH7XZCkUwQY5XZBRWKYUe51Ad05wiM0gZDZD"
 let VERIFY_TOKEN = "335432290287878|g3wgooRtQfsD6A6x4W-GOOSCiU8";
 
 let products = [{"id": "0001", "price": "200$"}, {"id": "0002", "price": "350$"}];
+
+let PAGES = [{"pageId": "339555589884042", "name": "Đồng hồ abc"}, {"pageId": "171366526684972", "name": "LAIF0 FPT.AI"}]
+
+let ACCESS_TOKEN;
 
 app.listen(process.env.PORT || 4000, () => console.log('webhook is listening.'));
 
@@ -42,13 +48,15 @@ app.post('/webhook', (req, res) => {
                // if (changes.field === 'feed' && changes.value.item)
                console.log(changes);
 
-
                let value = changes.value;
 
-               if (value.from.name !== 'Đồng hồ abc') {
+               if (value.from.name !== 'Đồng hồ abc' && !!ACCESS_TOKEN) {
                   sendCommentReply(value.from, value.comment_id, value.message);
                   sendPrivateReply(value.from, value.comment_id, value.message);
                   likeComment(value.comment_id);
+               }
+               else if (ACCESS_TOKEN === undefined || ACCESS_TOKEN === '') {
+                  console.log("Not found access token!!!");
                }
             });
          }
@@ -96,6 +104,35 @@ app.get('/webhook', (req, res) => {
    }
 });
 
+app.post('/authorize', (req, res) => {
+   let body = req.body;
+
+   request({
+      url: 'https://graph.facebook.com/me/accounts',
+      qs: {
+			access_token: body.accessToken,
+		},
+      method: 'GET',
+      json: {
+         scope: 'manage_pages,publish_pages,read_page_mailboxes,pages_messaging,pages_messaging_subscriptions'
+      }
+   }, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+
+         if (body.data.length > 0) {
+            body.data.forEach(function (page) {
+               if (page.id === PAGES[0].pageId) {
+                  ACCESS_TOKEN = page.access_token;
+               }
+            });
+         }
+      } else {
+         console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+      }
+   });
+
+   res.sendStatus(200);
+});
 
 function sendReplyMessage(senderId, recipientId, receivedMsg) {
 	request({
@@ -118,17 +155,11 @@ function sendReplyMessage(senderId, recipientId, receivedMsg) {
 	});
 }
 
-function getAccessToken(callback) {
-   request({
-      uri: 'https://graph.facebook.com/oauth/access_token'
-   });
-}
-
 function sendCommentReply(from, commentId, message) {
    request({
       uri: 'https://graph.facebook.com/v2.12/' + commentId + '/comments',
       qs: {
-         access_token: VERIFY_TOKEN
+         access_token: ACCESS_TOKEN
       },
       method: 'POST',
       json: {
@@ -147,7 +178,7 @@ function sendPrivateReply(from, commentId, message) {
    request({
       uri: 'https://graph.facebook.com/v2.12/' + commentId + '/private_replies',
       qs: {
-         access_token: VERIFY_TOKEN
+         access_token: ACCESS_TOKEN
       },
       method: 'POST',
       json: {
@@ -166,7 +197,7 @@ function likeComment(commentId) {
    request({
       uri: 'https://graph.facebook.com/v2.12/' + commentId + '/likes',
       qs: {
-         access_token: VERIFY_TOKEN
+         access_token: ACCESS_TOKEN
       },
       method: 'POST'
    }, function (error, response, body) {
