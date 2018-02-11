@@ -55,6 +55,12 @@
 
   };
 
+  function myFacebookLogin() {
+     FB.login(function(response){
+        console.log(response);
+        $.post('/authorize', response.authResponse);
+     }, {scope: 'manage_pages,publish_pages,read_page_mailboxes,pages_messaging,pages_messaging_subscriptions'});
+ }
   // Load the SDK asynchronously
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -71,9 +77,10 @@
   the FB.login() function when clicked.
 -->
 
-   <fb:login-button scope="manage_pages,publish_pages,read_page_mailboxes,pages_messaging,pages_messaging_subscriptions" onlogin="checkLoginState();">
-   </fb:login-button>
+   <!--<fb:login-button scope="manage_pages,publish_pages,read_page_mailboxes,pages_messaging,pages_messaging_subscriptions" onlogin="checkLoginState();">
+   </fb:login-button>-->
 
+   <button onclick="myFacebookLogin()">Login with Facebook</button>
    <div id="status">
    </div>
 
