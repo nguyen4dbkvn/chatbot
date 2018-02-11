@@ -11,6 +11,7 @@
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     if (response.status === 'connected') {
+      document.getElementById('status').innerHTML = 'Thanks for logging in';
       $.post('/authorize', response.authResponse);
     } else {
       document.getElementById('status').innerHTML = 'Please log ' +
