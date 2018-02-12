@@ -5,14 +5,10 @@ const
    request = require('request'),
    bodyParser = require('body-parser'),
    path = require('path'),
-   app = express().use(bodyParser.json());
+   app = express().use(bodyParser.json()),
+   fs = require('fs');
 
    app.use(bodyParser.urlencoded({extended: false}));
-
-// let VERIFY_TOKEN = "EAAEOCh2yDjwBAKLdOw21Rf132ck5V7jsWLiTHxZBBj9u4b5aH8BTmHJdMXg2UW3VjkxiMJvovpWWwipMSDsVrgMn4o9Qe3hVKP8p2F1RjVxii1F2lgNOAAE6ZAQJo7QIZAIq2zZCUZA15qeouBIbRCths4HspgK3e35wrXh2lZBjMNDuIZAvyaU";
-// let VERIFY_TOKEN = "EAAExEuqCQQYBAMCCfTGZCQ2MBYjjbTno3ZAOqDAP3EOVuLTsjayA1nDOPDZAdZAB6HZA48Yb3xUgCafeL8xO6ZA0HGjEkUJ1L2lSpKBw0GjhrZB1iuLDJgUjV0aPMlLkg4b2yunJCthyngbqnKrPsXV5miVdVrvMUmCGbII1FLsyu1DBSzdoycg"
-//let VERIFY_TOKEN = "EAACEdEose0cBAKGjeWd4T9e43UMpBD8K5DdgwBesEMHKALFDuNaZAmYai50aA3XhoJALiY2uGFUJ7buAZBAE6soOIlhjiPPP1QUZAWMgVyZBGwBDEXOQZBNufeqBKCrt0n0q3wbQebuGbqOrEmWJVbPSX5a5LOvMkiqYmFGQZCZCHHdSH7XZCkUwQY5XZBRWKYUe51Ad05wiM0gZDZD"
-let VERIFY_TOKEN = "335432290287878|g3wgooRtQfsD6A6x4W-GOOSCiU8";
 
 let products = [{"id": "0001", "price": "200$"}, {"id": "0002", "price": "350$"}];
 
@@ -51,12 +47,23 @@ app.post('/webhook', (req, res) => {
                let value = changes.value;
 
                if (value.from.name !== 'Đồng hồ abc' && !!ACCESS_TOKEN) {
-                  sendCommentReply(value.from, value.comment_id, value.message);
-                  sendPrivateReply(value.from, value.comment_id, value.message);
-                  likeComment(value.comment_id);
-               }
-               else if (ACCESS_TOKEN === undefined || ACCESS_TOKEN === '') {
-                  console.log("Not found access token!!!");
+                  if (ACCESS_TOKEN === undefined || ACCESS_TOKEN === '') {
+                     fs.readFileSync('access_token', (data, err) => {
+                        if (err) {
+                           throw err;
+                        }
+                        else {
+                           ACCESS_TOKEN = data;
+                           sendCommentReply(value.from, value.comment_id, value.message);
+                           sendPrivateReply(value.from, value.comment_id, value.message);
+                           likeComment(value.comment_id);
+                        }
+                     });
+                  } else {
+                     sendCommentReply(value.from, value.comment_id, value.message);
+                     sendPrivateReply(value.from, value.comment_id, value.message);
+                     likeComment(value.comment_id);
+                  }
                }
             });
          }
@@ -123,6 +130,9 @@ app.post('/authorize', (req, res) => {
             body.data.forEach(function (page) {
                if (page.id === PAGES[0].pageId) {
                   ACCESS_TOKEN = page.access_token;
+                  fs.writeFileSync('access_token', page.access_token, (err) => {
+                     console.error(err);
+                  });
                }
             });
          }
