@@ -46,7 +46,7 @@ app.post('/webhook', (req, res) => {
 
                let value = changes.value;
 
-               if (value.from.name !== 'Đồng hồ abc' && !!ACCESS_TOKEN) {
+               if (value.from.name !== 'Đồng hồ abc') {
                   if (ACCESS_TOKEN === undefined || ACCESS_TOKEN === '') {
                      fs.readFileSync('access_token', (data, err) => {
                         if (err) {
