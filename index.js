@@ -10,6 +10,7 @@ const
 
    app.use(bodyParser.urlencoded({extended: false}));
 
+let VERIFY_TOKEN = 'app_thu_nghiem';
 let products = [{"id": "0001", "price": "200$"}, {"id": "0002", "price": "350$"}];
 
 let PAGES = [{"pageId": "339555589884042", "name": "Đồng hồ abc"}, {"pageId": "171366526684972", "name": "LAIF0 FPT.AI"}]
@@ -150,7 +151,7 @@ function sendReplyMessage(senderId, recipientId, receivedMsg) {
 	request({
 		url: 'https://graph.facebook.com/v2.12/me/messages',
 		qs: {
-			access_token: VERIFY_TOKEN,
+			access_token: ACCESS_TOKEN,
 		},
 		method: 'POST',
 		json: {
