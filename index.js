@@ -17,7 +17,7 @@ let PAGES = [{"pageId": "339555589884042", "name": "Đồng hồ abc"}, {"pageId
 
 let ACCESS_TOKEN;
 
-let ACCESS_TOKEN_FILE_PATH = path.join(__dirname + 'access_token');
+let ACCESS_TOKEN_FILE_PATH = path.join(__dirname + '/access_token');
 
 app.listen(process.env.PORT || 4000, () => console.log('webhook is listening.'));
 
