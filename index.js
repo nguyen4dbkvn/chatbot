@@ -17,6 +17,8 @@ let PAGES = [{"pageId": "339555589884042", "name": "Đồng hồ abc"}, {"pageId
 
 let ACCESS_TOKEN;
 
+let ACCESS_TOKEN_FILE_PATH = path.join(__dirname + 'access_token');
+
 app.listen(process.env.PORT || 4000, () => console.log('webhook is listening.'));
 
 app.get('/', (req, res) => {
@@ -49,7 +51,7 @@ app.post('/webhook', (req, res) => {
 
                if (value.from.name !== 'Đồng hồ abc') {
                   if (ACCESS_TOKEN === undefined || ACCESS_TOKEN === '') {
-                     fs.readFileSync('access_token', (data, err) => {
+                     fs.readFileSync(ACCESS_TOKEN_FILE_PATH, (data, err) => {
                         if (err) {
                            throw err;
                         }
@@ -131,7 +133,7 @@ app.post('/authorize', (req, res) => {
             body.data.forEach(function (page) {
                if (page.id === PAGES[0].pageId) {
                   ACCESS_TOKEN = page.access_token;
-                  fs.writeFileSync('access_token', page.access_token, (err) => {
+                  fs.writeFileSync(ACCESS_TOKEN_FILE_PATH, page.access_token, (err) => {
                      console.error(err);
                   });
                }
