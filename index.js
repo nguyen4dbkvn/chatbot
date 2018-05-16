@@ -140,6 +140,7 @@ app.post('/authorize', (req, res) => {
             });
          }
          console.log(body);
+         console.log('LOG IN');
          console.log(ACCESS_TOKEN);
       } else {
          console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
